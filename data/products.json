@@ -1,0 +1,114 @@
+[
+  {
+    "id": "a1b2c3d4-e5f6-4789-9abc-def012345678",
+    "slug": "cargador-de-celular-samsung",
+    "sku": "SAMSUNG-CHG-150",
+    "name": "Cargador de celular Samsung",
+    "description": "Cargador rápido para celulares Samsung con puerto Type-C.",
+    "brand": "samsung",
+    "category": "celulares",
+    "tags": ["cargador", "samsung", "tipo-c", "carga-rapida"],
+    "status": "published",
+    "isActive": true,
+    "featured": false,
+    "condition": "nuevo",
+    "barcode": "7501234567890",
+    "rating": 3.5,
+    "reviews": 10,
+    "createdAt": "2025-09-15T08:00:00Z",
+    "updatedAt": "2026-06-10T16:45:00Z",
+
+    "seo": {
+      "metaTitle": "Cargador Samsung Type-C Carga Rápida 15W | Tu Tienda",
+      "metaDescription": "Cargador rápido Samsung Type-C de 15W con cable incluido. Disponible en negro, blanco y gris. Envío gratis."
+    },
+
+    "price": {
+      "current": 12,
+      "old": 16,
+      "discount": 25,
+      "currency": "USD"
+    },
+
+    "tax": {
+      "taxable": true,
+      "taxClass": "general"
+    },
+
+    "specs": {
+      "power": "15W",
+      "connector": "USB Type-C",
+      "cableLength": "1m",
+      "compatible": [
+        "Samsung Galaxy S series",
+        "Samsung Galaxy A series",
+        "Samsung Galaxy Note series"
+      ]
+    },
+
+    "warranty": {
+      "duration": 12,
+      "unit": "meses"
+    },
+
+    "shipping": {
+      "weight": { "value": 0.15, "unit": "kg" },
+      "dimensions": { "length": 10, "width": 6, "height": 3, "unit": "cm" },
+      "free": true
+    },
+
+    "colors": ["negro", "blanco", "gris"],
+
+    "images": [
+      {
+        "url": "https://m.media-amazon.com/images/I/51BAP2hTxJL._AC_UF1000,1000_QL80_.jpg",
+        "alt": "Cargador Samsung Type-C carga rápida, vista principal del producto"
+      },
+      {
+        "url": "https://media.falabella.com/falabellaCO/137275267_01/w=1500,h=1500,fit=cover",
+        "alt": "Cargador Samsung Type-C dentro de su empaque original"
+      },
+      {
+        "url": "https://www.intelcomphonduras.com/wp-content/uploads/2018/09/s-l300-1.jpg",
+        "alt": "Detalle del conector y puerto USB-C del cargador Samsung"
+      },
+      {
+        "url": "https://riiing.com.ar/wp-content/uploads/2023/07/cargador-de-220v-a-usb-samsung-cable-15w-type-c-ep-t1510xbsgar-negro.png",
+        "alt": "Cargador Samsung Type-C color negro con cable incluido"
+      },
+      {
+        "url": "https://down-co.img.susercontent.com/file/6a1a056e32716533ab50f112766fd6b3",
+        "alt": "Cargador Samsung Type-C en uso cargando un celular"
+      }
+    ],
+
+    "availability": "disponible",
+    "stock": 130,
+    "minOrderQuantity": 1,
+    "maxOrderQuantity": 10,
+
+    "variants": [
+      {
+        "sku": "SAMSUNG-CHG-150-BLK",
+        "color": "negro",
+        "stock": 20,
+        "image": "https://riiing.com.ar/wp-content/uploads/2023/07/cargador-de-220v-a-usb-samsung-cable-15w-type-c-ep-t1510xbsgar-negro.png"
+      },
+      {
+        "sku": "SAMSUNG-CHG-150-WHT",
+        "color": "blanco",
+        "stock": 30,
+        "image": "https://m.media-amazon.com/images/I/51BAP2hTxJL._AC_UF1000,1000_QL80_.jpg"
+      },
+      {
+        "sku": "SAMSUNG-CHG-150-GRY",
+        "color": "gris",
+        "stock": 80,
+        "image": "https://media.falabella.com/falabellaCO/137275267_01/w=1500,h=1500,fit=cover"
+      }
+    ],
+
+    "relatedProducts": []
+  }
+]
+

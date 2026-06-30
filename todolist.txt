@@ -1,0 +1,18 @@
+verificar el filtrado de las ordenes                                               DONE
+verificar el funcionamiento correcto de los endpoints                              STILL
+Configuracion del js del modulo Zod                                                DONE
+terminar la documentacion en el readme para el resto de los endpoints              DONE
+completar el controlador para logout y profile                                     DONE
+falta configurar el modelo para search                                             DONE
+configurar un test.js para aprender a testear con jest y supertest                 STILL
+agregar schema de validacion a las rutas que la requieran                          DONE
+manejo global de errores                                                           STILL
+agregar paginacion                                                                 STILL
+agregar ordenamiento                                                               STILL
+agregar filtros                                                                    STILL
+configurar un rate limiting                                                        STILL
+crear un endpoint para subida de archivos con multer                               STILL
+implemetar websockets para un chat                                                 STILL
+implemetar redireccionamiento                                                      STILL
+implemetar api versioning                                                          STILL
+el midleware validateParams inplementarlo.                                         STILL

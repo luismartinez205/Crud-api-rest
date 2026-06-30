@@ -1,0 +1,22 @@
+[
+  {      
+        "id": "user001",
+        "name": "luis francisco martinez",
+        "mail": "luisfrancisco198@gmail.com",
+        "phone": "0050765153550",
+        "provincia": "bocas del toro",
+        "distrito": "changuinola",
+        "corregimiento": "el empalme",
+        "address": "planta de molde, cerca taller arauz",
+        "postalCode": "12345",
+        "country": "panama",
+        "createdAt": null,
+        "role": "admin",
+        "updatedAt": null       
+
+   }
+   
+
+
+
+]

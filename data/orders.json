@@ -1,0 +1,57 @@
+[
+    {
+        "id": "ord_001",
+        "totals": {
+            "tax": 60.2,
+            "discount": 0,
+            "subtotal": 859.97,
+            "shipping": 10,
+            "total": 930.17
+        },
+        "payment": {
+            "method": "credit_card",
+            "status": "paid",
+            "transactionId": "txn_123456"
+        },
+        "items": [
+            {
+                "subtotal": 799.99,
+                "price": 799.99,
+                "quantity": 1,
+                "name": "Laptop Lenovo IdeaPad",
+                "productId": "Computadora portatil lenovo"
+            },
+            {
+                "subtotal": 59.98,
+                "price": 29.99,
+                "productId": "Mouse usb logitech",
+                "name": "Mouse Inalámbrico Logitech",
+                "quantity": 2
+            }
+        ],
+        "category": "processing",
+        "name": "Luis Francisco Martínez",
+        "createdAt": "2026-05-29T15:30:00Z",
+        "orderNumber": "20260529001",
+        "shippingAddress": {
+            "postalCode": "0000",
+            "province": "Bocas del toro",
+            "country": "Panama",
+            "address": "Planta de molde, cerca al taller arauz",
+            "city": "Changuinola"
+        },
+        "status": "processing",
+        "updatedAt": {
+            "type": "firestore/timestamp/1.0",
+            "seconds": 1780294689,
+            "nanoseconds": 0
+        },
+        "price": 930.17,
+        "customer": {
+            "id": "usr_001",
+            "phone": "+50765153550",
+            "name": "Luis Francisco Martínez",
+            "email": "luisfrancisco@gmail.com"
+        }
+    }
+]

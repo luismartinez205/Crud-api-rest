@@ -1,0 +1,224 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://tu-tienda.com/schemas/producto.schema.json",
+  "title": "Producto",
+  "description": "Esquema de validación para un producto del catálogo de la tienda en línea.",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "id",
+      "slug",
+      "sku",
+      "name",
+      "description",
+      "brand",
+      "category",
+      "isActive",
+      "status",
+      "price",
+      "stock",
+      "availability",
+      "images",
+      "variants"
+    ],
+    "properties": {
+      "id": {
+        "type": "string",
+        "format": "uuid",
+        "description": "Identificador único e inmutable del producto."
+      },
+      "slug": {
+        "type": "string",
+        "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+        "description": "Versión amigable para URL, en minúsculas y separada por guiones."
+      },
+      "sku": {
+        "type": "string",
+        "minLength": 1,
+        "description": "Código de referencia (SKU) del producto a nivel general."
+      },
+      "name": {
+        "type": "string",
+        "minLength": 1
+      },
+      "description": {
+        "type": "string",
+        "minLength": 1
+      },
+      "brand": {
+        "type": "string"
+      },
+      "category": {
+        "type": "string"
+      },
+      "tags": {
+        "type": "array",
+        "items": { "type": "string" },
+        "uniqueItems": true
+      },
+      "status": {
+        "type": "string",
+        "enum": ["draft", "published", "archived"]
+      },
+      "isActive": {
+        "type": "boolean"
+      },
+      "featured": {
+        "type": "boolean"
+      },
+      "condition": {
+        "type": "string",
+        "enum": ["nuevo", "usado", "reacondicionado"]
+      },
+      "barcode": {
+        "type": "string",
+        "pattern": "^[0-9]{8,14}$"
+      },
+      "rating": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 5
+      },
+      "reviews": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "createdAt": {
+        "type": ["string", "null"],
+        "format": "date-time"
+      },
+      "updatedAt": {
+        "type": ["string", "null"],
+        "format": "date-time"
+      },
+      "seo": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "metaTitle": { "type": "string", "maxLength": 70 },
+          "metaDescription": { "type": "string", "maxLength": 160 }
+        }
+      },
+      "price": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["current", "currency"],
+        "properties": {
+          "current": { "type": "number", "minimum": 0 },
+          "old": { "type": "number", "minimum": 0 },
+          "discount": { "type": "number", "minimum": 0, "maximum": 100 },
+          "currency": {
+            "type": "string",
+            "pattern": "^[A-Z]{3}$",
+            "description": "Código de moneda ISO 4217, ej. USD, MXN, COP."
+          }
+        }
+      },
+      "tax": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taxable": { "type": "boolean" },
+          "taxClass": { "type": "string" }
+        }
+      },
+      "specs": {
+        "type": "object",
+        "description": "Especificaciones técnicas libres, varían según la categoría del producto.",
+        "additionalProperties": true
+      },
+      "warranty": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "duration": { "type": "integer", "minimum": 0 },
+          "unit": { "type": "string", "enum": ["dias", "meses", "anos"] }
+        }
+      },
+      "shipping": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["free"],
+        "properties": {
+          "weight": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "value": { "type": "number", "minimum": 0 },
+              "unit": { "type": "string", "enum": ["kg", "g", "lb"] }
+            }
+          },
+          "dimensions": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "length": { "type": "number", "minimum": 0 },
+              "width": { "type": "number", "minimum": 0 },
+              "height": { "type": "number", "minimum": 0 },
+              "unit": { "type": "string", "enum": ["cm", "in"] }
+            }
+          },
+          "free": { "type": "boolean" }
+        }
+      },
+      "colors": {
+        "type": "array",
+        "items": { "type": "string" },
+        "uniqueItems": true
+      },
+      "images": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["url", "alt"],
+          "properties": {
+            "url": { "type": "string", "format": "uri" },
+            "alt": { "type": "string", "minLength": 1 }
+          }
+        }
+      },
+      "availability": {
+        "type": "string",
+        "enum": ["disponible", "agotado", "preventa", "descontinuado"]
+      },
+      "stock": {
+        "type": "integer",
+        "minimum": 0,
+        "description": "Debe ser igual a la suma del stock de todas las variantes."
+      },
+      "minOrderQuantity": {
+        "type": "integer",
+        "minimum": 1
+      },
+      "maxOrderQuantity": {
+        "type": "integer",
+        "minimum": 1
+      },
+      "variants": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["sku", "stock"],
+          "properties": {
+            "sku": { "type": "string", "minLength": 1 },
+            "color": { "type": "string" },
+            "size": { "type": "string" },
+            "stock": { "type": "integer", "minimum": 0 },
+            "image": { "type": "string", "format": "uri" },
+            "price": { "type": "number", "minimum": 0 }
+          }
+        }
+      },
+      "relatedProducts": {
+        "type": "array",
+        "items": { "type": "string", "format": "uuid" }
+      }
+    }
+  }
+}
