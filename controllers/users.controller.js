@@ -1,5 +1,5 @@
 import * as Model from '../models/user.js';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 
 // Obtener todos los usuarios y los filtrados por sus campos
 export const getAllUsers = async (req, res) => {
