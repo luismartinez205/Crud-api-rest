@@ -11,14 +11,8 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "devEngines": {
-    "packageManager": {
-      "name": "pnpm",
-      "version": "^11.3.0",
-      "onFail": "download"
-    }
-  },
   "type": "module",
+  "packageManager": "pnpm@11.3.0",
   "dependencies": {
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",
