@@ -1,10 +1,9 @@
-import { collection, getDocs, query, where, getDoc, doc, addDoc, setDoc, deleteDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase.js';
+import { FieldValue } from 'firebase-admin/firestore';
 
 export const getAllUsers = async () => {
   try {
-    const userRef = collection(db, 'users');
-    const snapshot = await getDocs(userRef);
+    const snapshot = await db.collection('users').get();
     const users = [];
     
     snapshot.forEach(doc => {
@@ -21,19 +20,17 @@ export const getAllUsers = async () => {
   }
 };
 
-
 export const getUserById = async (id) => {
   try {
-    const userRef = doc(db, 'users', String(id));
-    const snapshot = await getDoc(userRef);
+    const doc = await db.collection('users').doc(String(id)).get();
     
-    if (!snapshot.exists()) {
+    if (!doc.exists) {
       return null;
     }
     
     return {
-      id: snapshot.id,
-      ...snapshot.data()
+      id: doc.id,
+      ...doc.data()
     };
   } catch (error) {
     console.error('Error fetching user:', error);
@@ -43,14 +40,13 @@ export const getUserById = async (id) => {
 
 export const deleteUserById = async (id) => {
   try {
-    const userRef = doc(db, 'users', String(id));
-    const snapshot = await getDoc(userRef);
+    const doc = await db.collection('users').doc(String(id)).get();
     
-    if (!snapshot.exists()) {
+    if (!doc.exists) {
       return false;
     }
     
-    await deleteDoc(userRef);
+    await db.collection('users').doc(String(id)).delete();
     return true;
   } catch (error) {
     console.error('Error deleting user:', error);
@@ -60,19 +56,18 @@ export const deleteUserById = async (id) => {
 
 export const updateUserById = async (id, updatedData) => {
   try {
-    const userRef = doc(db, 'users', String(id));
-    const snapshot = await getDoc(userRef);
+    const doc = await db.collection('users').doc(String(id)).get();
     
-    if (!snapshot.exists()) {
+    if (!doc.exists) {
       return null;
     }
     
-    await updateDoc(userRef, updatedData);
+    await db.collection('users').doc(String(id)).update(updatedData);
     
-    const updatedSnapshot = await getDoc(userRef);
+    const updatedDoc = await db.collection('users').doc(String(id)).get();
     return {
-      id: updatedSnapshot.id,
-      ...updatedSnapshot.data()
+      id: updatedDoc.id,
+      ...updatedDoc.data()
     };
   } catch (error) {
     console.error('Error updating user:', error);
@@ -82,14 +77,10 @@ export const updateUserById = async (id, updatedData) => {
 
 export const createUser = async (userData) => {
   try {
-    await setDoc(
-      doc(db, "users", userData.id),
-      userData
-    );
-
+    await db.collection('users').doc(userData.id).set(userData);
     return userData;
   } catch (error) {
-    console.error("Error creating user:", error);
+    console.error('Error creating user:', error);
     throw error;
   }
 };
@@ -97,9 +88,7 @@ export const createUser = async (userData) => {
 // Buscar usuario por mail
 export const getUserByEmail = async (mail) => {
   try {
-    const usersRef = collection(db, 'users');
-    const q = query(usersRef, where("mail", "==", mail));
-    const snapshot = await getDocs(q);
+    const snapshot = await db.collection('users').where('mail', '==', mail).get();
 
     if (snapshot.empty) return null;
 

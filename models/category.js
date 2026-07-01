@@ -1,19 +1,17 @@
-import { collection, getDocs, query, where, getDoc, doc,addDoc, setDoc,updateDoc,deleteDoc } from 'firebase/firestore';
 import { db } from '../firebase.js';
 
 export const getAllCategories = async () => {
   try {
-    const userRef = collection(db, 'categories');
-    const snapshot = await getDocs(userRef);
+    const snapshot = await db.collection('categories').get();
     const categories = [];
-    
+
     snapshot.forEach(doc => {
       categories.push({
         id: doc.id,
         ...doc.data()
       });
     });
-    
+
     return categories;
   } catch (error) {
     console.error('Error fetching Categories:', error);
@@ -21,19 +19,18 @@ export const getAllCategories = async () => {
   }
 };
 
-
 export const getCategoryById = async (id) => {
   try {
-    const userRef = doc(db, 'categories', String(id));
-    const snapshot = await getDoc(userRef);
-    
-    if (!snapshot.exists()) {
+    const docRef = db.collection('categories').doc(String(id));
+    const docSnap = await docRef.get();
+
+    if (!docSnap.exists) {
       return null;
     }
-    
+
     return {
-      id: snapshot.id,
-      ...snapshot.data()
+      id: docSnap.id,
+      ...docSnap.data()
     };
   } catch (error) {
     console.error('Error fetching Category:', error);
@@ -43,14 +40,14 @@ export const getCategoryById = async (id) => {
 
 export const deleteCategoryById = async (id) => {
   try {
-    const userRef = doc(db, 'categories', String(id));
-    const snapshot = await getDoc(userRef);
-    
-    if (!snapshot.exists()) {
+    const docRef = db.collection('categories').doc(String(id));
+    const docSnap = await docRef.get();
+
+    if (!docSnap.exists) {
       return false;
     }
-    
-    await deleteDoc(userRef);
+
+    await docRef.delete();
     return true;
   } catch (error) {
     console.error('Error deleting Category:', error);
@@ -60,19 +57,19 @@ export const deleteCategoryById = async (id) => {
 
 export const updateCategoryById = async (id, updatedData) => {
   try {
-    const userRef = doc(db, 'categories', String(id));
-    const snapshot = await getDoc(userRef);
-    
-    if (!snapshot.exists()) {
+    const docRef = db.collection('categories').doc(String(id));
+    const docSnap = await docRef.get();
+
+    if (!docSnap.exists) {
       return null;
     }
-    
-    await updateDoc(userRef, updatedData);
-    
-    const updatedSnapshot = await getDoc(userRef);
+
+    await docRef.update(updatedData);
+
+    const updatedSnap = await docRef.get();
     return {
-      id: updatedSnapshot.id,
-      ...updatedSnapshot.data()
+      id: updatedSnap.id,
+      ...updatedSnap.data()
     };
   } catch (error) {
     console.error('Error updating category:', error);
@@ -82,16 +79,15 @@ export const updateCategoryById = async (id, updatedData) => {
 
 export const createCategory = async (categoryData) => {
   try {
+    if (categoryData.id) {
+      await db.collection('categories').doc(String(categoryData.id)).set(categoryData);
+      return categoryData;
+    }
 
-    await setDoc(
-      doc(db, "categories", categoryData.id),
-      categoryData
-    );
-
-    return categoryData;
-
+    const ref = await db.collection('categories').add(categoryData);
+    return { id: ref.id, ...categoryData };
   } catch (error) {
-    console.error("Error creating Category:", error);
+    console.error('Error creating Category:', error);
     throw error;
   }
 };

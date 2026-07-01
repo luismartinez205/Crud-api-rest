@@ -1,10 +1,8 @@
-import { collection, getDocs, query, where, getDoc, doc, addDoc, setDoc, deleteDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase.js';
 
 export const getAllOrders = async () => {
   try {
-    const productsRef = collection(db, 'orders');
-    const snapshot = await getDocs(productsRef);
+    const snapshot = await db.collection('orders').get();
     const orders = [];
     
     snapshot.forEach(doc => {
@@ -21,19 +19,17 @@ export const getAllOrders = async () => {
   }
 };
 
-
 export const getOrderById = async (id) => {
   try {
-    const orderRef = doc(db, 'orders', String(id));
-    const snapshot = await getDoc(orderRef);
+    const doc = await db.collection('orders').doc(String(id)).get();
     
-    if (!snapshot.exists()) {
+    if (!doc.exists) {
       return null;
     }
     
     return {
-      id: snapshot.id,
-      ...snapshot.data()
+      id: doc.id,
+      ...doc.data()
     };
   } catch (error) {
     console.error('Error fetching order:', error);
@@ -43,14 +39,13 @@ export const getOrderById = async (id) => {
 
 export const deleteOrderById = async (id) => {
   try {
-    const orderRef = doc(db, 'orders', String(id));
-    const snapshot = await getDoc(orderRef);
+    const doc = await db.collection('orders').doc(String(id)).get();
     
-    if (!snapshot.exists()) {
+    if (!doc.exists) {
       return false;
     }
     
-    await deleteDoc(orderRef);
+    await db.collection('orders').doc(String(id)).delete();
     return true;
   } catch (error) {
     console.error('Error deleting order:', error);
@@ -60,19 +55,18 @@ export const deleteOrderById = async (id) => {
 
 export const updateOrderById = async (id, updatedData) => {
   try {
-    const orderRef = doc(db, 'orders', String(id));
-    const snapshot = await getDoc(orderRef);
+    const doc = await db.collection('orders').doc(String(id)).get();
     
-    if (!snapshot.exists()) {
+    if (!doc.exists) {
       return null;
     }
     
-    await updateDoc(orderRef, updatedData);
+    await db.collection('orders').doc(String(id)).update(updatedData);
     
-    const updatedSnapshot = await getDoc(orderRef);
+    const updatedDoc = await db.collection('orders').doc(String(id)).get();
     return {
-      id: updatedSnapshot.id,
-      ...updatedSnapshot.data()
+      id: updatedDoc.id,
+      ...updatedDoc.data()
     };
   } catch (error) {
     console.error('Error updating order:', error);
@@ -82,16 +76,10 @@ export const updateOrderById = async (id, updatedData) => {
 
 export const createOrder = async (orderData) => {
   try {
-
-    await setDoc(
-      doc(db, "orders", orderData.id),
-      orderData
-    );
-
+    await db.collection('orders').doc(orderData.id).set(orderData);
     return orderData;
-
   } catch (error) {
-    console.error("Error creating order:", error);
+    console.error('Error creating order:', error);
     throw error;
   }
 };

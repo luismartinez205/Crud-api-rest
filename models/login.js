@@ -1,4 +1,3 @@
-import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../firebase.js';
 
 const mapUser = (doc) => {
@@ -11,20 +10,18 @@ const mapUser = (doc) => {
 };
 
 export const getUserByEmail = async (email) => {
-  const usersRef = collection(db, 'users');
-  let snapshot = await getDocs(
-    query(usersRef, where('mail', '==', email))
-  );
+  try {
+    let snapshot = await db.collection('users').where('mail', '==', email).get();
 
-  if (snapshot.empty) {
-    snapshot = await getDocs(
-      query(usersRef, where('email', '==', email))
-    );
+    if (snapshot.empty) {
+      snapshot = await db.collection('users').where('email', '==', email).get();
+    }
+
+    if (snapshot.empty) return null;
+
+    return mapUser(snapshot.docs[0]);
+  } catch (error) {
+    console.error('Error fetching user by email:', error);
+    throw error;
   }
-
-  if (snapshot.empty) {
-    return null;
-  }
-
-  return mapUser(snapshot.docs[0]);
 };
