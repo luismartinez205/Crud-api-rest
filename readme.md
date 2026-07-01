@@ -73,3 +73,7 @@ FIREBASEAPPID= your_Id
 ## License
 
 This project is open-sourced software licensed under the MIT License.
+
+## url del proyecto en vercel
+
+-https://crud-api-rest-7o8p.vercel.app/
