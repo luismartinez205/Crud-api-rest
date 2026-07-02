@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="./aircss.css" />
+  <link rel="stylesheet" href="./custom.css" />
+  <title>Agregar Producto</title>
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="nav-brand">
+        <a href="index.html" class="text-primary fw-bold">Volver</a>
+      </div>
+      <div>
+        <a href="create-product.html" class="btn btn-primary">Agregar producto</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+    <h1 class="text-primary text-center m-b m-t display-3">Agregar nuevo producto</h1>
+
+    <p>Rellena los campos mínimos y usa un token válido de administrador para enviar el producto.</p>
+
+    <form id="productForm" class="form">
+      <div class="form-group">
+        <label for="token">Token Bearer (admin)</label>
+        <input type="text" id="token" name="token" placeholder="Bearer token aquí" required />
+      </div>
+
+      <div class="form-group">
+        <label for="name">Nombre</label>
+        <input type="text" id="name" name="name" placeholder="Nombre del producto" required />
+      </div>
+
+      <div class="form-group">
+        <label for="price">Precio</label>
+        <input type="number" id="price" name="price" step="0.01" min="0" placeholder="0.00" required />
+      </div>
+
+      <div class="form-group">
+        <label for="category">Categoría</label>
+        <input type="text" id="category" name="category" placeholder="Categoría" required />
+      </div>
+
+      <div class="form-group">
+        <label for="brand">Marca</label>
+        <input type="text" id="brand" name="brand" placeholder="Marca" />
+      </div>
+
+      <div class="form-group">
+        <label for="stock">Stock</label>
+        <input type="number" id="stock" name="stock" min="0" placeholder="Cantidad en stock" />
+      </div>
+
+      <div class="form-group">
+        <label for="featured">Destacado</label>
+        <input type="checkbox" id="featured" name="featured" />
+      </div>
+
+      <div class="form-group">
+        <label for="description">Descripción</label>
+        <textarea id="description" name="description" rows="4" placeholder="Descripción del producto"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="images">Imágenes (URLs separadas por coma)</label>
+        <input type="text" id="images" name="images" placeholder="https://... , https://..." />
+      </div>
+
+      <button type="submit" class="btn btn-primary">Enviar producto</button>
+    </form>
+
+    <section id="result" class="m-t"></section>
+  </main>
+
+  <script>
+    const form = document.getElementById('productForm');
+    const result = document.getElementById('result');
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const token = document.getElementById('token').value.trim();
+      const name = document.getElementById('name').value.trim();
+      const price = document.getElementById('price').value;
+      const category = document.getElementById('category').value.trim();
+      const brand = document.getElementById('brand').value.trim();
+      const stock = document.getElementById('stock').value;
+      const featured = document.getElementById('featured').checked;
+      const description = document.getElementById('description').value.trim();
+      const imagesValue = document.getElementById('images').value.trim();
+
+      const body = {
+        name,
+        price: Number(price),
+        category,
+      };
+
+      if (brand) body.brand = brand;
+      if (stock !== '') body.stock = Number(stock);
+      if (featured) body.featured = true;
+      if (description) body.description = description;
+      if (imagesValue) {
+        body.images = imagesValue
+          .split(',')
+          .map((url) => url.trim())
+          .filter(Boolean);
+      }
+
+      try {
+        const response = await fetch('/api/products', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: token.startsWith('Bearer ') ? token : `Bearer ${token}`
+          },
+          body: JSON.stringify(body)
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          result.innerHTML = `<div class="alert alert-danger">Error: ${data.message || 'No se pudo crear el producto'}</div>`;
+          return;
+        }
+
+        result.innerHTML = `<div class="alert alert-success">Producto creado con éxito. ID: ${data.product.id}</div>`;
+        form.reset();
+      } catch (error) {
+        result.innerHTML = `<div class="alert alert-danger">Error de conexión: ${error.message}</div>`;
+      }
+    });
+  </script>
+</body>
+</html>
