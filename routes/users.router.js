@@ -36,7 +36,7 @@ router.patch('/users/me/password', verifyToken, validateBody(changePasswordSchem
 router.get('/users/:id', verifyToken,validateSearch(userIdSchema), getUserById);
 
 // Crear un nuevo usuario (admin)
-router.post('/users', verifyToken, verifyAdmin, validateBody(createUserSchema), createUser);
+router.post('/users', validateBody(createUserSchema), createUser);
 
 // Actualizar usuario por su id (admin)
 router.patch('/users/:id', verifyToken, verifyAdmin,validateBody(updateUserSchema), updateUserById);
