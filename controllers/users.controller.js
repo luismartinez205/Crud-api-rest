@@ -40,6 +40,7 @@ export const createUser = async (req, res) => {
   const {
     name,
     role,
+    email,
     mail,
     password,
     adress,
@@ -47,19 +48,20 @@ export const createUser = async (req, res) => {
     ...otherFields
   } = req.body ?? {};
 
-  if (!name?.trim() || !password) {
+  const userEmail = email?.trim() || mail?.trim();
+
+  if (!name?.trim() || !userEmail || !password) {
     return res.status(400).json({
-      message: 'Nombre y contraseña son requeridos'
+      message: 'Nombre, email y contraseña son requeridos'
     });
   }
 
-  // Validar email existente (ahora mail si existe)
-  const existingUser = await Model.getUserByEmail(mail);
+  const existingUser = await Model.getUserByEmail(userEmail);
 
   if (existingUser) {
     return res.status(400).json({
       success: false,
-      message: "El email ya está registrado"
+      message: 'El email ya está registrado'
     });
   }
 
@@ -69,7 +71,7 @@ export const createUser = async (req, res) => {
     id: Date.now().toString(),
     name: name.trim(),
     role: role?.trim() || 'customer',
-    mail: mail?.trim() || '',
+    mail: userEmail,
     password: hashedPassword,
     adress: adress?.trim() || '',
     phone: phone?.trim() || '',
@@ -90,12 +92,14 @@ export const updateUserById = async (req, res) => {
   const {
     name,
     role,
+    email,
     mail,
     adress,
     phone,
-    
     ...otherFields
   } = req.body ?? {};
+
+  const userEmail = email?.trim() || mail?.trim();
 
   const user = await Model.getUserById(req.params.id);
 
@@ -107,7 +111,7 @@ export const updateUserById = async (req, res) => {
     ...user,
     ...(name && { name: name.trim() }),
     ...(role && { role: role.trim() }),
-    ...(mail && { mail: mail.trim() }),
+    ...(userEmail && { mail: userEmail }),
     ...(adress && { adress: adress.trim() }),
     ...(phone && { phone: phone.trim() }),
     ...otherFields
@@ -151,6 +155,7 @@ export const getMyProfile = async (req, res) => {
 export const updateMyProfile = async (req, res) => {
   const {
     name,
+    email,
     mail,
     adress,
     phone,
@@ -158,6 +163,8 @@ export const updateMyProfile = async (req, res) => {
     password, // se ignora: para esto existe /users/me/password
     ...otherFields
   } = req.body ?? {};
+
+  const userEmail = email?.trim() || mail?.trim();
 
   const user = await Model.getUserById(req.user.uid);
 
@@ -168,7 +175,7 @@ export const updateMyProfile = async (req, res) => {
   const updatedUser = {
     ...user,
     ...(name && { name: name.trim() }),
-    ...(mail && { mail: mail.trim() }),
+    ...(userEmail && { mail: userEmail }),
     ...(adress && { adress: adress.trim() }),
     ...(phone && { phone: phone.trim() }),
     ...otherFields
